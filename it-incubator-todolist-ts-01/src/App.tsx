@@ -3,6 +3,8 @@ import './App.scss';
 import {TodoList} from "./Todolist";
 import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm";
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
+import {Menu} from "@material-ui/icons";
 
 export type TaskType = {
     id: string
@@ -12,7 +14,7 @@ export type TaskType = {
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
-type TodoListsType = {
+export type TodoListsType = {
     id: string
     title: string
     filter: FilterValuesType
@@ -116,33 +118,53 @@ function App() {
 
     return (
         <div className="App">
-            <AddItemForm addItem={addTodoList}/>
-            {
-                todoLists.map(tl => {
-                    let tasksForTodoList = tasks[tl.id];
-                    if (tl.filter === "active") {
-                        tasksForTodoList = tasks[tl.id].filter(t => !t.isDone)
-                    }
 
-                    if (tl.filter === "completed") {
-                        tasksForTodoList = tasks[tl.id].filter(t => t.isDone)
-                    }
-                    return (<TodoList key={tl.id}
-                                      id={tl.id}
-                                      title={tl.title}
-                                      tasks={tasksForTodoList}
-                                      removeTask={removeTask}
-                                      addTasks={addTask}
-                                      changeTodoListFilter={changeTodoListFilter}
-                                      changeTaskStatus={changeTaskStatus}
-                                      filterValue={tl.filter}
-                                      removeTodoList={removeTodoList}
-                                      changeTaskTitle={changeTaskTitle}
-                                      changeTodoListTitle={changeTodoListTitle}
-                        />
-                    )
-                })
-            }
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton edge="start" color="inherit" aria-label="menu">
+                        <Menu/>
+                    </IconButton>
+                    <Typography variant="h6">
+                        News
+                    </Typography>
+                    <Button color="inherit">Login</Button>
+                </Toolbar>
+            </AppBar>
+            <Container fixed={true}>
+
+                <Grid container style={{padding: "20px"}}><AddItemForm addItem={addTodoList}/></Grid>
+                <Grid container  spacing={1}>{
+                    todoLists.map(tl => {
+                        let tasksForTodoList = tasks[tl.id];
+                        if (tl.filter === "active") {
+                            tasksForTodoList = tasks[tl.id].filter(t => !t.isDone)
+                        }
+
+                        if (tl.filter === "completed") {
+                            tasksForTodoList = tasks[tl.id].filter(t => t.isDone)
+                        }
+                        return (
+
+                            <Grid item>
+                                <Paper style={{padding: "20px"}} elevation={24}>
+                                    <TodoList key={tl.id}
+                                             id={tl.id}
+                                             title={tl.title}
+                                             tasks={tasksForTodoList}
+                                             removeTask={removeTask}
+                                             addTasks={addTask}
+                                             changeTodoListFilter={changeTodoListFilter}
+                                             changeTaskStatus={changeTaskStatus}
+                                             filterValue={tl.filter}
+                                             removeTodoList={removeTodoList}
+                                             changeTaskTitle={changeTaskTitle}
+                                             changeTodoListTitle={changeTodoListTitle}
+                                /></Paper>
+                            </Grid>
+                        )
+                    })
+                }</Grid>
+            </Container>
         </div>
     );
 }
