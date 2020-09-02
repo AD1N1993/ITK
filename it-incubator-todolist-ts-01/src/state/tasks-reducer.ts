@@ -1,4 +1,4 @@
-import {FilterValuesType, TaskStateType, TodoListsType} from "../App";
+import {TaskStateType} from "../App";
 import {v1} from "uuid";
 import {AddTodolistActionType, RemoveTodolistActionType} from "./todolists-reducer";
 
@@ -26,7 +26,6 @@ export type ChangeTaskTitleActionType = {
     title: string
 }
 
-
 type ActionsType =
     RemoveTaskActionType
     | AddTaskActionType
@@ -35,8 +34,9 @@ type ActionsType =
     | AddTodolistActionType
     | RemoveTodolistActionType
 
+let initialState: TaskStateType = {};
 
-export const tasksReducer = (state: TaskStateType, action: ActionsType): TaskStateType => {
+export const tasksReducer = (state: TaskStateType = initialState, action: ActionsType): TaskStateType => {
     switch (action.type) {
         case 'REMOVE-TASK':
             let newTodoList = [...state[action.todoListId].filter(task => task.id !== action.taskId)]
@@ -73,20 +73,23 @@ export const tasksReducer = (state: TaskStateType, action: ActionsType): TaskSta
             delete newState[action.id]
             return newState
         default:
-            throw new Error('error');
+           return state;
     }
 }
 
-export const removeTasksAC = (taskId: string, todoListId: string): RemoveTaskActionType => {
+export const removeTasksAC = (taskId: string, todoListId: string): ActionsType => {
     return {type: "REMOVE-TASK", taskId, todoListId}
 }
 
-export const changeTaskStatusAC = (taskID: string, isDone: boolean, todoListID: string): ChangeTaskStatusActionType => {
+export const changeTaskStatusAC = (taskID: string, isDone: boolean, todoListID: string): ActionsType => {
     return {type: "CHANGE-STATUS", taskID, isDone, todoListID}
 }
-export const changeTaskTitleAC = (taskID: string, title: string, todoListID: string): ChangeTaskTitleActionType => {
+export const changeTaskTitleAC = (taskID: string, title: string, todoListID: string): ActionsType => {
     return {type: "CHANGE-TASK-TITLE", taskID, title, todoListID}
 }
 
+export const addTaskAC = (title: string, todoListID: string): ActionsType => {
+    return {type: 'ADD-TASK', title, todoListID};
+}
 
 

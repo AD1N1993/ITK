@@ -2,6 +2,10 @@ import {TaskStateType, TodoListsType} from "../App";
 import { tasksReducer} from "./tasks-reducer";
 import {AddTodoListAC, RemoveTodoListAC, todolistsReducer} from "./todolists-reducer";
 
+
+
+
+
 test('property with todolistId should be deleted', () => {
     const startState: TaskStateType = {
         "todolistId1": [
