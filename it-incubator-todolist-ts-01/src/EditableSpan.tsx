@@ -7,7 +7,8 @@ type PropsType = {
     saveNewTitle: (newTitle: string) => void
 }
 
-export function EditableSpan(props: PropsType) {
+export const EditableSpan= React.memo((props: PropsType)=> {
+    console.log("EditableSpan called")
 
     let [editMode, setEditMode] = useState<boolean>(false);
 
@@ -49,4 +50,4 @@ export function EditableSpan(props: PropsType) {
             }
         </>
     );
-}
+})

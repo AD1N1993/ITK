@@ -127,7 +127,7 @@ function AppWithReducers() {
                             <Grid item>
                                 <Paper style={{padding: "20px"}} elevation={24}>
                                     <TodoList key={tl.id}
-                                             id={tl.id}
+                                             tlId={tl.id}
                                              title={tl.title}
                                              tasks={tasksForTodoList}
                                              removeTask={removeTask}

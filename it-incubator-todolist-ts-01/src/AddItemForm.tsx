@@ -1,23 +1,26 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import {Button, IconButton, TextField} from "@material-ui/core";
-import {AddBox, TextFields} from "@material-ui/icons";
+import {IconButton, TextField} from "@material-ui/core";
+import {AddBox} from "@material-ui/icons";
 
 type PropsType = {
     addItem: (title:string) => void
 }
 
 
-export const AddItemForm = (props:PropsType) => {
+export const AddItemForm = React.memo( (props:PropsType) => {
+    console.log("Add item form called")
 
     let [itemName, setItemName] = useState<string>("");
     let [error, setError] = useState<string | null>(null);
 
      function onItemNameChanged(e: ChangeEvent<HTMLInputElement>) {
+         if(error !==null) setError(null)
         setItemName(e.currentTarget.value);
         setError("");
     }
 
     function onAddItemKeyPressed(e: KeyboardEvent<HTMLInputElement>) {
+
         if (e.key === 'Enter') {
             addItem();
         }
@@ -35,13 +38,6 @@ export const AddItemForm = (props:PropsType) => {
     return(
         <>
             <div>
-                {/*<input*/}
-                {/*    className={error ? "error" : ""}*/}
-                {/*    type={'text'}*/}
-                {/*    value={itemName}*/}
-                {/*    onChange={onItemNameChanged}*/}
-                {/*    onKeyPress={onAddItemKeyPressed}*/}
-                {/*/>*/}
                 <TextField variant={"outlined"}
                            value={itemName}
                            onChange={onItemNameChanged}
@@ -58,4 +54,4 @@ export const AddItemForm = (props:PropsType) => {
             </div>
         </>
     );
-}
+})
