@@ -10,7 +10,6 @@ type TaskPropsType = {
     removeTask: (taskId: string) => void
     changeStatus: (taskId: string, newCheckBoxValue: boolean) => void
     changeTaskTitle:(taskId: string,newTitle:string)=> void
-
 }
 
 
@@ -20,8 +19,8 @@ export const Task = React.memo((props: TaskPropsType) => {
         },[props]);
         let changeStatus =useCallback( (e: ChangeEvent<HTMLInputElement>) => {
             let newCheckBoxValue = e.currentTarget.checked;
-            let taskId = e.currentTarget.id
-            props.changeStatus(taskId, newCheckBoxValue);
+
+            props.changeStatus(props.task.id, newCheckBoxValue);
         },[props]);
         let changeTaskTitle =useCallback( (newTitle:string) => {
             props.changeTaskTitle(props.task.id, newTitle)

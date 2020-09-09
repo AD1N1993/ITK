@@ -22,7 +22,7 @@ type PropsType = {
 }
 
 export const TodoList = React.memo((props: PropsType) => {
-    console.log("TodoList called")
+
 
 
     const onAllClickHandler = useCallback(() => {
