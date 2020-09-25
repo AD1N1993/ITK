@@ -1,10 +1,11 @@
-import React, {ChangeEvent, useCallback, useState} from "react";
-import {FilterValuesType, TaskType} from "./App";
+import React, {useCallback} from "react";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
-import {Button, Checkbox, IconButton} from "@material-ui/core";
+import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {Task} from "./Task";
+import {TaskStatuses, TaskType} from "./api/todolist-api";
+import {FilterValuesType} from "./state/todolists-reducer";
 
 type PropsType = {
     tlId: string
@@ -13,7 +14,7 @@ type PropsType = {
     removeTask: (taskId: string, toDoListId: string) => void
     addTasks: (newTaskName: string, toDoListId: string) => void
     changeTodoListFilter: (newFilterValue: FilterValuesType, toDoListId: string) => void
-    changeTaskStatus: (taskID: string, isDone: boolean, toDoListId: string) => void
+    changeTaskStatus: (taskID: string, status: TaskStatuses, toDoListId: string) => void
     changeTaskTitle: (taskID: string, newTitle: string, toDoListId: string) => void
     changeTodoListTitle: (todoListID: string, newTitle: string) => void
     filterValue: FilterValuesType
@@ -53,16 +54,16 @@ export const TodoList = React.memo((props: PropsType) => {
     let tasksForTodoList = props.tasks
 
     if (props.filterValue === "active") {
-        tasksForTodoList = props.tasks.filter(t => !t.isDone)
+        tasksForTodoList = props.tasks.filter(t => t.status === TaskStatuses.New)
     }
 
     if (props.filterValue === "completed") {
-        tasksForTodoList = props.tasks.filter(t => t.isDone)
+        tasksForTodoList = props.tasks.filter(t => t.status === TaskStatuses.Completed)
     }
     let removeTask = useCallback( (taskId:string) => {
         props.removeTask(taskId, props.tlId)
     },[props]);
-    let changeStatus =useCallback( (taskId: string, newCheckBoxValue: boolean) => {
+    let changeStatus = useCallback( (taskId: string, newCheckBoxValue: TaskStatuses) => {
         props.changeTaskStatus(taskId, newCheckBoxValue, props.tlId);
     },[props])
 
