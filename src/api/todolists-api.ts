@@ -3,7 +3,7 @@ import axios from 'axios'
 const settings = {
     withCredentials: true,
     headers: {
-        'API-KEY': '2c4c11b3-b7ca-4a85-9ffe-5b500c4db141'
+        'API-KEY': process.env.REACT_APP_API_KEY
     }
 }
 const instance = axios.create({
@@ -12,6 +12,19 @@ const instance = axios.create({
 })
 
 // api
+export const authAPI = {
+    login(values:LoginParamsType){
+        return instance.post('auth/login',values);
+    },
+    me(){
+        return instance.get<ResponseType<ResponseUserDataType>>('auth/me');
+    },
+    logout(){
+        return instance.delete<ResponseType>("auth/login");
+    }
+}
+
+
 export const todolistsAPI = {
     getTodolists() {
         const promise = instance.get<TodolistType[]>('todo-lists');
@@ -92,4 +105,15 @@ type GetTasksResponse = {
     error: string | null
     totalCount: number
     items: TaskType[]
+}
+export type LoginParamsType = {
+    email:string
+    password:string
+    rememberMe:boolean
+    captcha?:boolean
+}
+type ResponseUserDataType={
+    id: number
+    email:string
+    login: string
 }

@@ -1,12 +1,23 @@
-import React from 'react'
+import React, {useCallback, useEffect} from 'react'
 import './App.css'
-import {AppBar, Button, Container, IconButton, LinearProgress, Toolbar, Typography} from '@material-ui/core'
+import {
+    AppBar,
+    Button,
+    CircularProgress,
+    Container,
+    IconButton,
+    LinearProgress,
+    Toolbar,
+    Typography
+} from '@material-ui/core'
 import {Menu} from '@material-ui/icons'
 import {TodolistsList} from '../features/TodolistsList/TodolistsList'
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {AppRootStateType} from './store'
-import {RequestStatusType} from './app-reducer'
+import {initializeAppTC, logoutTC, RequestStatusType} from './app-reducer'
+import {Route, Switch, Redirect} from 'react-router-dom'
+import {Login} from "../features/Login/Login";
 
 type PropsType = {
     demo?: boolean
@@ -14,9 +25,25 @@ type PropsType = {
 
 function App({demo = false}: PropsType) {
     const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status)
+    const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+    const dispatch = useDispatch();
+    const LogoutHandler = useCallback(() => {
+        dispatch(logoutTC())
+    }, [])
+    useEffect(() => {
+        dispatch(initializeAppTC());
+    }, [dispatch])
+    if (!isInitialized) {
+        return <div
+            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
+    }
+
     return (
         <div className="App">
-            <ErrorSnackbar />
+            <ErrorSnackbar/>
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
@@ -25,12 +52,17 @@ function App({demo = false}: PropsType) {
                     <Typography variant="h6">
                         News
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    <Button color="inherit" onClick={LogoutHandler}>{isLoggedIn ? "logout" : "Login "} </Button>
                 </Toolbar>
-             { status === 'loading' &&  <LinearProgress /> }
+                {status === 'loading' && <LinearProgress/>}
             </AppBar>
             <Container fixed>
-                <TodolistsList demo={demo}/>
+                <Switch>
+                    <Route exact path={'/'} render={() => <TodolistsList demo={demo}/>}/>
+                    <Route path={'/login'} render={() => <Login/>}/>
+                    <Route path={"/404"} render={() => <h1>Error 404. Page not found.</h1>}/>
+                    <Redirect from={"*"} to={"/404"}/>
+                </Switch>
             </Container>
         </div>
     )
