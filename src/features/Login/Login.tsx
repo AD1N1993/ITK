@@ -4,11 +4,11 @@ import {useFormik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {loginTC} from "./newAuthReducer";
 import {AppRootStateType} from "../../app/store";
-import { Redirect } from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 
 export const Login = () => {
-    const isLoggedIn = useSelector<AppRootStateType,boolean>(state => state.auth.isLoggedIn)
-    const dispatch =   useDispatch();
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+    const dispatch = useDispatch();
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -34,8 +34,10 @@ export const Login = () => {
         },
 
     })
-    if(isLoggedIn){ return <Redirect to={"/"}/>}
-    return <Grid container justify="center">
+    if (isLoggedIn) {
+        return <Redirect to={"/"}/>
+    }
+    return <Grid container justify="center" >
         <Grid item xs={4}>
             <form onSubmit={formik.handleSubmit}>
                 <FormControl>

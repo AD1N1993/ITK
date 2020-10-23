@@ -3,7 +3,7 @@ import axios from 'axios'
 const settings = {
     withCredentials: true,
     headers: {
-        'API-KEY': process.env.REACT_APP_API_KEY
+        'API-KEY': "2c4c11b3-b7ca-4a85-9ffe-5b500c4db141"
     }
 }
 const instance = axios.create({
@@ -14,7 +14,7 @@ const instance = axios.create({
 // api
 export const authAPI = {
     login(values:LoginParamsType){
-        return instance.post('auth/login',values);
+        return instance.post<ResponseType<{userId?:number}>>('auth/login',values);
     },
     me(){
         return instance.get<ResponseType<ResponseUserDataType>>('auth/me');
@@ -27,20 +27,16 @@ export const authAPI = {
 
 export const todolistsAPI = {
     getTodolists() {
-        const promise = instance.get<TodolistType[]>('todo-lists');
-        return promise;
+        return instance.get<TodolistType[]>('todo-lists');
     },
     createTodolist(title: string) {
-        const promise = instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', {title: title});
-        return promise;
+        return instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', {title: title});
     },
     deleteTodolist(id: string) {
-        const promise = instance.delete<ResponseType>(`todo-lists/${id}`);
-        return promise;
+        return instance.delete<ResponseType>(`todo-lists/${id}`);
     },
     updateTodolist(id: string, title: string) {
-        const promise = instance.put<ResponseType>(`todo-lists/${id}`, {title: title});
-        return promise;
+        return instance.put<ResponseType>(`todo-lists/${id}`, {title: title});
     },
     getTasks(todolistId: string) {
         return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`);
@@ -110,7 +106,7 @@ export type LoginParamsType = {
     email:string
     password:string
     rememberMe:boolean
-    captcha?:boolean
+    captcha?:string
 }
 type ResponseUserDataType={
     id: number
