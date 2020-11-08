@@ -45,18 +45,16 @@ function App({demo = false}: PropsType) {
         <div className="App">
             <ErrorSnackbar/>
             <AppBar position="static">
-                <Toolbar>
-                    <IconButton edge="start" color="inherit" aria-label="menu">
-                        <Menu/>
-                    </IconButton>
+                <Toolbar style={{display:"flex", justifyContent:"space-between"}}>
+
                     <Typography variant="h6">
-                        News
+                       Tasks
                     </Typography>
-                    <Button color="inherit" onClick={LogoutHandler}>{isLoggedIn ? "logout" : "Login "} </Button>
+                    <Button style={{marginLeft:"20px"}}  color="inherit" onClick={LogoutHandler}>{isLoggedIn ? "logout" : "Login "} </Button>
                 </Toolbar>
                 {status === 'loading' && <LinearProgress/>}
             </AppBar>
-            <Container fixed>
+            <Container fixed >
                 <Switch>
                     <Route exact path={'/'} render={() => <TodolistsList demo={demo}/>}/>
                     <Route path={'/login'} render={() => <Login/>}/>

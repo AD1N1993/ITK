@@ -48,8 +48,8 @@ export const Login = () => {
                             </a>
                         </p>
                         <p>or use common test account credentials:</p>
-                        <p>Email: free@samuraijs.com</p>
-                        <p>Password: free</p>
+                        <p>Email: griv1993@gmail.com</p>
+                        <p>Password: >hbqUhbdbwrbq</p>
                     </FormLabel>
                     <FormGroup>
                         <TextField
